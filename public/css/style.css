@@ -1,0 +1,24 @@
+.color-white {
+    color: #fff;
+}
+.container-fluid {
+    min-height: 550px;
+    max-width: 700px;
+}
+
+header {
+    padding:15px;
+}
+
+.cust-card {
+    padding:20px;
+    margin-top: 30px;
+}
+
+.pad-l-1 {
+    padding-left: 15px;
+}
+
+.mar-l-1 {
+    margin-left:15px;
+}
