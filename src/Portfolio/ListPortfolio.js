@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 export default function ListPortfolio() {
 	let [data, setData] = useState([]);
-	let [edit, setEdit] = useState(false);
-	function updatePortfolioName() {
-		setEdit(!edit);
+	function removePortfolio() {
+		console.log('remove action triggered')
 	}
 	useEffect(() => {
 		axios.get('/list').then(function (response) {
@@ -27,23 +26,10 @@ export default function ListPortfolio() {
 						<tr>
 							<th scope="row">{obj.id}</th>
 							<td>
-								{!edit &&
-									<span>{obj.name}</span>
-								}
-								{edit &&
-									<input type="text" value={obj.name} />
-								}
+								<span>{obj.name}</span>
 							</td>
 							<td>
-								{!edit &&
-									<button onClick={updatePortfolioName}>EDIT</button>
-								}
-								{edit &&
-									<React.Fragment>
-										<button>Update</button>
-										<button onClick={updatePortfolioName}>Cancel</button>
-									</React.Fragment>
-								}
+								<button onClick={removePortfolio}>Remove</button>
 							</td>
 						</tr>
 					)

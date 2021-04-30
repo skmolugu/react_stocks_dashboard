@@ -8,7 +8,7 @@ export default function Header() {
                 <Link class="p-2 text-dark" to="/create-portfolio">Create Portfolio</Link>
                 <Link class="p-2 text-dark" to="/view-portfolio">View Portfolios</Link>
                 <Link class="p-2 text-dark" to="/add-share">Add Share</Link>
-                <a class="p-2 text-dark" href="#">Pricing</a>
+                <Link class="p-2 text-dark" to="/view-shares">View Shares</Link>
             </nav>
         </div>
     )
