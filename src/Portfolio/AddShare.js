@@ -28,7 +28,7 @@ function AddShare(props) {
 	}
 	function addShare() {
 		axios.post('/add-share', { id: selectedPortfolio, name, quantity, currentPrice, exchange }).then(function (response, err) {
-			props.history.push('view-shares');
+			props.history.push('shares');
 		});
 	}
 	useEffect(() => {
