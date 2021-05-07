@@ -1,16 +1,16 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router';
+import {connect} from 'react-redux';
+import { fetchPortfolio, addShare } from '../store/actions';
 
 function AddShare(props) {
-	console.log('add share called');
-	let [portfolio, setPortfolio] = useState([]);
 	let [selectedPortfolio, setSelectedPortfolio] = useState([]);
 	let [name, setName] = useState();
 	let [quantity, setQuantity] = useState();
 	let [currentPrice, setCurrentPrice] = useState();
 	let [exchange, setExchange] = useState();
-	
+
 	function updatePortfolio(event) {
 		setSelectedPortfolio(event.target.value);
 	}
@@ -26,16 +26,14 @@ function AddShare(props) {
 	function updateExchange(event) {
 		setExchange(event.target.value);
 	}
-	function addShare() {
-		axios.post('/add-share', { id: selectedPortfolio, name, quantity, currentPrice, exchange }).then(function (response, err) {
-			props.history.push('shares');
-		});
+	function addStock() {
+		let request = { id: selectedPortfolio, name, quantity, currentPrice, exchange };
+		props.dispatch(addShare(request, props.history))
 	}
 	useEffect(() => {
-		axios.get('/list').then(function (response) {
-			setPortfolio(response.data);
-		});
+		props.dispatch(fetchPortfolio());
 	}, []);
+
 	return (
 		<div className="card cust-card">
 			<div className="col-md-12">
@@ -44,7 +42,7 @@ function AddShare(props) {
 						<label htmlFor="portfolioName">Select Portfolio:</label>
 						<select className="form-control" id="portfolioName" onChange={updatePortfolio}>
 							<option>--Select--</option>
-							{portfolio.map((obj) => {
+							{props.portfolio.map((obj) => {
 								return <option value={obj.id}>{obj.name}</option>
 							})}
 						</select>
@@ -75,9 +73,14 @@ function AddShare(props) {
 					</div>
 				</div>
 			</div>
-			<button className="col-md-3 mar-l-1 btn btn-primary btn-lg btn-block" onClick={addShare} type="submit">Create</button>
+			<button className="col-md-3 mar-l-1 btn btn-primary btn-lg btn-block" onClick={addStock} type="submit">Create</button>
 		</div>
 	)
 }
 
-export default withRouter(AddShare);
+const mapStateToProps = (state) => {
+	return {
+		portfolio: state.portfolio
+	}
+}
+export default withRouter(connect(mapStateToProps)(AddShare));

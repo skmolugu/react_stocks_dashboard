@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { fetchPortfolio } from '../store/actions';
+import { connect } from 'react-redux';
 
-export default function ViewShares() {
-	let [data, setData] = useState([]);
+function ViewShares(props) {
 	let [shares, setShares] = useState([]);
 	function displayShares(event) {
-		let selectedPortfolio = data.find(function (obj) {
+		let selectedPortfolio = props.data.find(function (obj) {
 			return obj.id === event.target.value
 		});
 		let shares = selectedPortfolio && selectedPortfolio.shares || [];
@@ -13,9 +14,7 @@ export default function ViewShares() {
 	}
 
 	useEffect(() => {
-		axios.get('/shares').then(function (response) {
-			setData(response.data);
-		});
+		props.dispatch(fetchPortfolio());
 	}, []);
 	return (
 		<div className="card cust-card">
@@ -25,7 +24,7 @@ export default function ViewShares() {
 						<label htmlFor="portfolioName">Select Portfolio:</label>
 						<select className="form-control" id="portfolioName" onChange={displayShares}>
 							<option>--Select--</option>
-							{data.map((obj) => {
+							{props.data.map((obj) => {
 								return <option value={obj.id}>{obj.name}</option>
 							})}
 						</select>
@@ -59,3 +58,9 @@ export default function ViewShares() {
 		</div>
 	)
 }
+const mapStateToProps = (state) => {
+	return {
+		data: state.portfolio
+	}
+}
+export default connect(mapStateToProps)(ViewShares);

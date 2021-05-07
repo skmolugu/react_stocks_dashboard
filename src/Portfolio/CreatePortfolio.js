@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
+import { createPortfolio } from '../store/actions';
 
 function CreatePortfolio(props) {
-	let [name,setName] = useState('');
+	let [name, setName] = useState('');
 	function apiCall() {
-		axios.post('/create',{name:name}).then(function(response,err) {
-			props.history.push('view-portfolio');
-		});
+		props.dispatch(createPortfolio(name, props.history));
 	}
 	let updateName = (event) => {
 		setName(event.target.value);
@@ -27,4 +27,4 @@ function CreatePortfolio(props) {
 	)
 }
 
-export default withRouter(CreatePortfolio);
+export default withRouter(connect()(CreatePortfolio));

@@ -1,15 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import {connect} from 'react-redux';
+import {fetchPortfolio} from '../store/actions';
 
-export default function ListPortfolio() {
-	let [data, setData] = useState([]);
-	function removePortfolio() {
-		console.log('remove action triggered')
-	}
+function ListPortfolio(props) {
 	useEffect(() => {
-		axios.get('/list').then(function (response) {
-			setData(response.data);
-		});
+		props.dispatch(fetchPortfolio());
 	}, []);
 	return (
 		<table class="table">
@@ -21,7 +17,7 @@ export default function ListPortfolio() {
 				</tr>
 			</thead>
 			<tbody>
-				{data.map((obj) => {
+				{props.data.map((obj) => {
 					return (
 						<tr>
 							<th scope="row">{obj.id}</th>
@@ -29,7 +25,7 @@ export default function ListPortfolio() {
 								<span>{obj.name}</span>
 							</td>
 							<td>
-								<button onClick={removePortfolio}>Remove</button>
+								<button>Remove</button>
 							</td>
 						</tr>
 					)
@@ -38,3 +34,9 @@ export default function ListPortfolio() {
 		</table>
 	)
 }
+const mapStateToProps = (state) => {
+	return {
+		data: state.portfolio || []
+	}
+}
+export default connect(mapStateToProps)(ListPortfolio)
